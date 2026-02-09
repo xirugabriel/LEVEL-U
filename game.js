@@ -3,7 +3,7 @@
    true = pula direto para o TUTORIAL
    false = jogo normal (intro+nome+selo+prólogo)
 ================================ */
-const DEV_SKIP = true;
+const DEV_SKIP = false;
 
 /* ===============================================
    Quando o DEV_SKIP estiver ON → pula p/ tutorial
@@ -915,6 +915,7 @@ function iniciarVideoFinal() {
     if (e.key === "Enter" || e.key === " ") enableAudio();
   });
 }
+
 
 
 
