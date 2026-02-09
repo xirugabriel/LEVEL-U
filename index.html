@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Level-U | O Ritual</title>
+  <meta 
+  name="viewport" 
+  content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#05000a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" href="icon.png">
+  <script defer src="game.js"></script>
+</head>
+
+<body>
+
+  <!-- FUNDO INICIAL ANIMADO -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="fundo.mp4" type="video/mp4" />
+  </video>
+
+  <!-- OVERLAY DE INTRO -->
+  <div class="intro-overlay"></div>
+
+  <div class="game-wrapper">
+
+<!-- TELA DE ESCOLHA ANTES DO PRÓLOGO -->
+<div id="prelogue-screen" class="prelogue-screen hidden">
+  <h2 class="selo-title">ESCOLHA SEU SELO ETERNO</h2>
+
+  <p class="selo-subtitle">
+    A Chama Primordial aguarda sua decisão.<br>
+      Um único selo definirá seu destino.
+  </p>
+
+  <div class="selo-grid">
+    <!-- Proteção -->
+    <button class="prelogue-option selo-option selected" data-choice="protecao">
+      <div class="selo-outer">
+        <img src="selo_protecao.png" alt="Selo da Proteção" class="selo-img" />
+      </div>
+      <span class="selo-label">PROTEÇÃO</span>
+      <span class="selo-desc">Escudo contra as trevas</span>
+    </button>
+
+    <!-- Intuição -->
+    <button class="prelogue-option selo-option" data-choice="intuicao">
+      <div class="selo-outer">
+        <img src="selo_intuicao.png" alt="Selo da Intuição" class="selo-img" />
+      </div>
+      <span class="selo-label">INTUIÇÃO</span>
+      <span class="selo-desc">Visão além do véu</span>
+    </button>
+
+    <!-- Coragem -->
+    <button class="prelogue-option selo-option" data-choice="coragem">
+      <div class="selo-outer">
+        <img src="selo_coragem.png" alt="Selo da Coragem" class="selo-img" />
+      </div>
+      <span class="selo-label">CORAGEM</span>
+      <span class="selo-desc">Fogo que não teme o abismo</span>
+    </button>
+  </div>
+
+  <!-- BOTÃO PARA AVANÇAR -->
+  <button id="continue-to-prologue" class="arcade-start-btn">
+  ▶ INVOCAR PRóLOGO
+</button>
+
+</div>
+
+   <div id="fade-layer" class="fade-layer hidden">
+  <div class="particle-layer"></div>
+
+  <div class="prologue-container">
+    <p id="prologue-text"></p>
+
+    <!-- BOTÃO QUE APARECE DEPOIS DO PRÓLOGO -->
+    <button id="start-game-btn" class="arcade-start-btn hidden" style="display:none;">
+      ▶ INICIAR DESAFIO
+    </button>
+  </div>
+</div>
+
+  <!-- TELA INICIAL -->
+    <div id="intro-screen" class="card arcade-card">
+  <div class="arcade-top">
+    <span class="arcade-label"></span>
+  </div>
+
+  <img src="logo.png" alt="Level-U Logo" class="game-logo" />
+
+  <p class="game-title">The Awakening of the fire</p>
+
+  <div class="arcade-status-row">
+    <span class="arcade-status">PLAYER 1</span>
+    <span class="arcade-status">CREDIT 01</span>
+  </div>
+
+  <p class="description">
+    Em um reino esquecido, apenas os escolhidos podem iniciar o caminho.<br />
+    Para entrar no jogo, você precisa se apresentar ao Mestre.
+  </p>
+
+  <label for="player-name" class="label">
+    Digite seu nome, viajante:
+  </label>
+
+  <input
+    id="player-name"
+    type="text"
+    placeholder="Digite seu nome..."
+    autocomplete="off"
+  />
+
+  <button id="start-btn" class="arcade-start-btn">
+    ▶ INICIAR JORNADA
+  </button>
+
+  <p class="hint">
+    ⚔️ O jogo só começa quando o seu nome for aceito.
+  </p>
+</div>
+
+
+    <!-- 🔥 ANIMAÇÃO MÍSTICA (FORA DO CARD) -->
+    <div id="magic-success" class="magic-circle hidden"></div>
+
+    <!-- 🧾 PERGAMINHO (FORA DO CARD) -->
+    <div id="scroll-container" class="scroll hidden">
+      <div class="scroll-content">
+        <p id="scroll-text"></p>
+      </div>
+    </div>
+
+    <!-- FAIXA DE RUNAS / EASTER EGG VISUAL -->
+    <div class="rune-band">
+      ᚲᛖᚱ ᚾᚨᛗᛟᚱᚨᚱ ᚲᛟᛗᛁᚷᛟ
+    </div>
+
+    <!-- TELA DO JOGO -->
+    <div id="game-screen" class="card hidden">
+      <h2>Bem-vinda, <span id="player-name-display"></span>.</h2>
+      <p>
+        O ritual foi iniciado. Em breve, o <strong>Nível 1</strong> será revelado...
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================
+     ⚔ TELA DE DINÂMICA DO GAME
+=============================== -->
+<section id="tutorial-screen" class="screen hidden">
+  <div class="tutorial-box">
+    
+    <div class="tutorial-title-box">
+  <p class="tutorial-overlabel">RITUAL INICIADO</p>
+  <h2 class="tutorial-title">Como a chama vai te testar</h2>
+</div>
+
+    <p class="tutorial-intro">
+      A partir de agora, cada fase é uma provação real.<br>
+      Você não está apenas jogando: está entrando em um pacto com a Chama Ancestral.
+    </p>
+
+    <!-- linha das vidas -->
+    <div class="tutorial-lives-row">
+      <div class="tutorial-badge">TUTORIAL</div>
+  <div class="hud-lives">
+    <span class="hud-label">VIDAS</span>
+
+    <div class="hud-hearts">
+      <span class="life-orb"></span>
+      <span class="life-orb"></span>
+      <span class="life-orb"></span>
+    </div>
+
+    <span class="hud-count">3 / 3</span>
+  </div>
+
+  <span class="tutorial-lives-text">
+    Você começa cada nível com <b>3 tentativas</b>. Use com sabedoria.
+  </span>
+</div>
+
+    <!-- regras em lista -->
+    <ul class="tutorial-list">
+      <li><b>Cada nível</b> será um desafio que você precisa cumprir.</li>
+      <li>Você pode <b>falhar até 3 vezes</b> no mesmo nível.</li>
+      <li>Se gastar todas as tentativas, a Chama apaga e você <b>volta para o início do jogo</b>.</li>
+      <li>Apenas quem insiste, observa os sinais e confia na própria intuição consegue avançar.</li>
+    </ul>
+
+    <p class="tutorial-warning">
+      Respire fundo. Leia o desafio com atenção. <br>
+      Quando você clicar em continuar, o ritual do Nível 1 começa.
+    </p>
+
+    <button id="start-level-1" class="arcade-start-btn">
+      ▶ COMEÇAR O NÍVEL 1
+    </button>
+  </div>
+</section>
+
+  <!-- TELA DO NÍVEL -->
+<section id="level-screen" class="hidden">
+
+   <div class="level-hud">
+    <div class="hud-lives">
+      <span class="hud-label">VIDAS</span>
+
+      <div class="hud-hearts" id="level-hearts">
+        <span class="life-orb"></span>
+        <span class="life-orb"></span>
+        <span class="life-orb"></span>
+      </div>
+
+      <span class="hud-count" id="level-hud-count">3 / 3</span>
+    </div>
+  </div>
+
+    <div class="pergaminho-container">
+        <div class="pergaminho-conteudo">
+            <h1 id="level-title">NÍVEL I</h1>
+            <h1 id="level-title2">O PERGAMINHO</h1>
+            <h4 id="level-subtitle">A palavra que só você poderia saber</h4>
+            <p id="level-description">
+                <p>Fui criado para ser descoberto,</p>
+                <p>mas desapareço quando sou dito em voz alta.</p>
+                <p>Só existe enquanto é guardado.</p>
+                <p>Quando revelado, deixa de ser.</p><br>
+            </p>
+
+            <div class="senha-box">
+                <input type="text" id="input-senha" placeholder="Digite a senha secreta">
+                <button id="btn-validar-senha">Desvendar</button>
+            </div>
+
+            <p id="senha-feedback"></p>
+        </div>
+    </div>
+</section>
+
+<!-- FLASH DE TRANSIÇÃO PÓS-PRÓLOGO -->
+<div id="flash-effect" class="flash hidden"></div>
+
+<div id="derrota-overlay">
+  <div class="derrota-card">
+    <h1>GAME OVER</h1>
+    <p>A chama se apagou... mas o ritual pode recomeçar.</p>
+    <button id="btn-derrota-recomecar">Tentar Novamente</button>
+  </div>
+</div>
+
+<div id="transition-overlay"></div>
+
+<section id="level2-screen" class="hidden">
+  <div class="level-card">
+    <h2>NÍVEL 2 — O SELO</h2>
+    <p class="level-sub">Toque as runas na ordem certa para quebrar o selo.</p>
+
+    <div class="runes-grid" id="l2-runes">
+      <button class="rune-btn" type="button" data-rune="ᚨ">ᚨ</button>
+      <button class="rune-btn" type="button" data-rune="ᚱ">ᚱ</button>
+      <button class="rune-btn" type="button" data-rune="ᚾ">ᚾ</button>
+      <button class="rune-btn" type="button" data-rune="ᛟ">ᛟ</button>
+    </div>
+
+    <div class="rune-progress">
+      <span>Sequência:</span>
+      <strong id="l2-seq">—</strong>
+    </div>
+
+    <p id="l2-feedback" class="level-feedback"></p>
+
+    <div class="level-actions">
+      <button id="l2-reset" class="btn-secondary" type="button">Recomeçar</button>
+      <button id="l2-win" class="btn-primary hidden" type="button">Concluir</button>
+    </div>
+  </div>
+</section>
+
+<section id="level2-screen" class="hidden">
+  <div class="level-card">
+    <h2>NÍVEL 2 — DAMAS</h2>
+    <p class="level-sub">Derrote a máquina para concluir o jogo.</p>
+
+    <div id="checkers-board"></div>
+
+    <p id="l2-feedback" class="level-feedback"></p>
+
+    <div class="level-actions">
+      <button id="l2-restart" class="btn-secondary">Recomeçar</button>
+    </div>
+  </div>
+</section>
+
+
+</body>
+</html>
