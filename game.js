@@ -863,17 +863,14 @@ function endGame(win){
 
 function iniciarVideoFinal() {
   document.body.innerHTML = `
-    <div id="video-wrap" style="
+    <div style="
       position:fixed;
       inset:0;
       background:black;
-      display:flex;
-      align-items:center;
-      justify-content:center;
     ">
       <iframe
-        src="https://drive.google.com/file/d/12GJcBWtU-J5UjNOyhm4Nv2V3a3PTiUV1/view?usp=drive_link"
-        allow="autoplay"
+        src="https://www.youtube.com/embed/8pKxEfCSee0?autoplay=1&mute=1&playsinline=1"
+        allow="autoplay; encrypted-media"
         allowfullscreen
         style="
           width:100vw;
@@ -883,39 +880,4 @@ function iniciarVideoFinal() {
       </iframe>
     </div>
   `;
-  
-  const wrap = document.getElementById("video-wrap");
-  const video = document.getElementById("final-video");
-  const overlay = document.getElementById("tap-audio");
-
-  // Tenta tocar (mudo) imediatamente
-  video.play().catch(() => {});
-
-  // Primeiro clique libera o áudio
-  const enableAudio = async () => {
-    try {
-      video.muted = false;
-      video.volume = 1;
-      await video.play();
-      overlay.style.display = "none";
-      wrap.style.cursor = "default";
-      wrap.removeEventListener("click", enableAudio);
-      wrap.removeEventListener("keydown", enableAudio);
-    } catch (e) {
-      // se falhar, mantém o overlay pra tentar de novo
-      console.log("Não consegui liberar áudio ainda:", e);
-    }
-  };
-
-  wrap.addEventListener("click", enableAudio);
-
-  // opcional: também funciona com Enter/Espaço
-  wrap.tabIndex = 0;
-  wrap.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") enableAudio();
-  });
 }
-
-
-
-
